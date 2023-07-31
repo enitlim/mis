@@ -280,7 +280,7 @@ console.log();
                 color="primary"
                 fullWidth
               >
-                Remove
+                Delete Permanently
               </Button>
             </Grid>
           </Grid>
