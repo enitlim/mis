@@ -43,7 +43,7 @@ const login = () => {
             helperText={errors.password?.message}
           />
           <Button type="submit" variant="contained" color="primary" fullWidth>
-            Log In
+            Login
           </Button>
         </form>
       </Container>
