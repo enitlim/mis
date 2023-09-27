@@ -6,7 +6,7 @@ import HomePage from "./homePage";
 import "bootstrap/dist/css/bootstrap.min.css";
 import $ from "jquery";
 import Popper from "popper.js";
-
+import Login  from "./login";
 
 export default function Home() {
   return (
@@ -17,7 +17,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
- <HomePage/>
+
+<Login/>
     </div>
   )
 }

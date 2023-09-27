@@ -1,0 +1,57 @@
+[
+  {
+    "questions": "What is the capital of India?",
+    "answer": [
+      {
+        "A": ["Mumbai", 0],
+        "B": ["Delhi", 1],
+        "C": ["Kolkata", 0],
+        "D": ["Banglore", 0]
+      }
+    ]
+  },
+  {
+    "questions": "What is the capital of Nepal?",
+    "answer": [
+      {
+        "A": ["Kathmandu", 1],
+        "B": ["Dharan", 0],
+        "C": ["Pokhara", 0],
+        "D": ["Biratnagar", 0]
+      }
+    ]
+  },
+  {
+    "questions": "What is the capital of Sri Lanka?",
+    "answer": [
+      {
+        "A": ["Kandy", 0],
+        "B": ["Anuradhapura", 0],
+        "C": ["Colombo", 1],
+        "D": ["Trincomalee", 0]
+      }
+    ]
+  },
+  {
+    "questions": "What is the capital of Bhutan?",
+    "answer": [
+      {
+        "A": ["Jakar", 0],
+        "B": ["Phuentsholing", 0],
+        "C": ["Paro", 0],
+        "D": ["Thimpu", 1]
+      }
+    ]
+  },
+  {
+    "questions": "What is the capital of Pakistan?",
+    "answer": [
+      {
+        "A": ["Karachi", 0],
+        "B": ["Quetta", 0],
+        "C": ["Lahore", 0],
+        "D": ["Islamabad", 1]
+      }
+    ]
+  }
+]

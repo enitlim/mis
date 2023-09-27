@@ -1,15 +1,32 @@
-import React from 'react'
+import React from "react";
 import { useForm } from "react-hook-form";
 import { Button, Container, TextField, Typography } from "@mui/material";
-const login = () => {
-    const {
-      register,
-      handleSubmit,
-      watch,
-      formState: { errors },
-    } = useForm();
-    const onSubmit = (data) => console.log("This is the data: ", data);
-    console.log(watch("email", "password"));
+import axios from "axios";
+import {useRouter} from "next/router";
+
+const Login = () => {
+  const router = useRouter();
+  const {
+    register,
+    handleSubmit,
+    watch,
+    formState: { errors },
+  } = useForm();
+  const onSubmit = async (data) => {
+    try {
+      console.log("This is the data: ", data);
+      const response = await axios.post("http://localhost:8000/token", data, {
+        headers: {
+          "Content-Type": "application/x-www-form-urlencoded",
+        },
+      });
+      console.log(response.data);
+      localStorage.setItem("access_token", response.data.access_token);
+      router.push("/homePage")
+    } catch (error) {
+      console.log("Error: ", error.response?.data);
+    }
+  };
   return (
     <>
       <Container maxWidth="xs">
@@ -19,18 +36,18 @@ const login = () => {
         <form onSubmit={handleSubmit(onSubmit)}>
           <TextField
             fullWidth
-            label="Email"
+            label="Username"
             variant="outlined"
             margin="normal"
-            {...register("email", {
+            {...register("username", {
               required: "Email is required",
-              pattern: {
-                value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
-                message: "Invalid email address",
-              },
+              // pattern: {
+              //   value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i,
+              //   message: "Invalid email address",
+              // },
             })}
-            error={!!errors.email}
-            helperText={errors.email?.message}
+            error={!!errors.username}
+            helperText={errors.username?.message}
           />
           <TextField
             fullWidth
@@ -49,6 +66,6 @@ const login = () => {
       </Container>
     </>
   );
-}
+};
 
-export default login
+export default Login;
