@@ -2,6 +2,8 @@ import { Button } from '@mui/material';
 import Link from 'next/link'
 import React from 'react'
 import axios from "axios";
+import MenuAppBar from './CommonComponents/menuAppBar';
+import QuizHome from './quiz';
 const HomePage = () => {
   const handleClick = async() => {
     let token=localStorage.getItem("access_token");
@@ -18,10 +20,12 @@ const HomePage = () => {
   return (
     <>
     <div>
-        <Link href="/annual_returns/ar26">Annul Return</Link>
+      <MenuAppBar/>
+      <QuizHome/>
+        {/* <Link href="/annual_returns/ar26">Annul Return</Link>
         <Button variant="contained" color="primary" onClick={handleClick}>
           Click Me
-        </Button>
+        </Button> */}
     </div>
     </>
   )

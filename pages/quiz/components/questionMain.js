@@ -10,7 +10,6 @@ import {
   Typography,
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
-import Questions from "./question.json";
 import { useSelector, useDispatch } from "react-redux";
 import {
   updateMarks,
@@ -18,17 +17,16 @@ import {
   reviewAnswer,
 } from "../../redux/features/quizSlice";
 
-const Question = ({ queIndex }) => {
+const Question = ({ queIndex, Questions }) => {
+  // console.log("Question MAin=> ",Questions);
   const quizData = useSelector((state) => state.quiz);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
   const [selectedAnswer, setSelectedAnswer] = useState(""); // State to store selected answer
   const dispatch = useDispatch();
   useEffect(() => {
-    setCurrentQuestionIndex(queIndex-1);
-
-   
+    setCurrentQuestionIndex(queIndex - 1);
   }, [queIndex]);
-  
+
   useEffect(() => {
     if (typeof quizData["answers"][currentQuestionIndex + 1] === "undefined") {
       setSelectedAnswer("");
@@ -86,8 +84,10 @@ const Question = ({ queIndex }) => {
   // console.log(typeof quizData["answers"][currentQuestionIndex]);
   return (
     <>
-      <Stack>
-        <Box sx={{ padding: "25px", margin: "25px" }}>
+      <Stack sx={{ width: "75%" }}>
+        <Box
+          sx={{ padding: "25px", margin: "25px", width: "75%", height: "75vh" }}
+        >
           <Typography variant="h5" color="initial">
             Quesion No: {currentQuestionIndex + 1}
           </Typography>
@@ -126,38 +126,48 @@ const Question = ({ queIndex }) => {
             </RadioGroup>
           </FormControl>
         </Box>
-        <Box sx={{ padding: "10px", width: "80%" }}>
+        <Box sx={{ padding: "10px", width: "75%" }}>
           <Grid container spacing={2} justifyContent="space-around">
             {currentQuestionIndex === 0 ? (
-              ""
+              <>
+                <Grid item>
+                  <Box sx={{ width: "40px" }}></Box>
+                </Grid>
+              </>
             ) : (
               <Grid item>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={
-                    () => handleNextQuestion("prev", currentQuestionIndex + 1)
-                    //
-                  }
-                >
-                  Previous
-                </Button>
+                <Box sx={{ width: "40px" }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={
+                      () => handleNextQuestion("prev", currentQuestionIndex + 1)
+                      //
+                    }
+                  >
+                    Previous
+                  </Button>
+                </Box>
               </Grid>
             )}
             {currentQuestionIndex === Questions.length - 1 ? (
-              ""
+              <Grid item>
+                <Box sx={{ width: "40px" }}></Box>
+              </Grid>
             ) : (
               <Grid item>
-                <Button
-                  variant="outlined"
-                  color="primary"
-                  onClick={
-                    () => handleNextQuestion("next", currentQuestionIndex + 1)
-                    //
-                  }
-                >
-                  Next
-                </Button>
+                <Box sx={{ width: "40px" }}>
+                  <Button
+                    variant="outlined"
+                    color="primary"
+                    onClick={
+                      () => handleNextQuestion("next", currentQuestionIndex + 1)
+                      //
+                    }
+                  >
+                    Next
+                  </Button>
+                </Box>
               </Grid>
             )}
 

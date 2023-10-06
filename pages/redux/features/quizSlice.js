@@ -15,19 +15,16 @@ const quizSlice = createSlice({
 
             
         },
-        clearAnswer:(state, action)=>{
-            const {quesId }=action.payload;
-            const newAns={...state.answers}
-            delete newAns[quesId];
-            state.answers=newAns;
-        },
         reviewAnswer:(state, action)=>{
             const { quesId, answerKey, marks, option } = action.payload;
             const ansObj = { quesId, answerKey, marks, option };
             state.answers[quesId]=ansObj
-        }
+        },
+        quizComplete:(state, action)=>{
+            state.answers={}
+        },
     }
 });
 
-export const { updateMarks, clearAnswer, reviewAnswer } = quizSlice.actions;
+export const { updateMarks, reviewAnswer, quizComplete } = quizSlice.actions;
 export default quizSlice.reducer;

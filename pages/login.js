@@ -3,9 +3,11 @@ import { useForm } from "react-hook-form";
 import { Button, Container, TextField, Typography } from "@mui/material";
 import axios from "axios";
 import {useRouter} from "next/router";
-
+import { useDispatch } from "react-redux";
+import { getUser } from "./redux/features/loginSlice";
 const Login = () => {
   const router = useRouter();
+  const dispatch = useDispatch();
   const {
     register,
     handleSubmit,
@@ -21,8 +23,14 @@ const Login = () => {
         },
       });
       console.log(response.data);
+       const config = {
+         headers: { Authorization: `Bearer ${response.data.access_token}` },
+       };
       localStorage.setItem("access_token", response.data.access_token);
-      router.push("/homePage")
+      const responseUser = await axios.get("http://localhost:8000/get_user_details", config)
+      dispatch(getUser(responseUser.data));
+      console.log(responseUser.data);
+      router.push("/home")
     } catch (error) {
       console.log("Error: ", error.response?.data);
     }

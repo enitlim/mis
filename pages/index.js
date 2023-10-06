@@ -1,11 +1,6 @@
 import Head from 'next/head'
-import Image from 'next/image'
 import styles from '../styles/Home.module.css'
-import Ar26 from './annual_returns/ar26'
-import HomePage from "./homePage";
 import "bootstrap/dist/css/bootstrap.min.css";
-import $ from "jquery";
-import Popper from "popper.js";
 import Login  from "./login";
 
 export default function Home() {
