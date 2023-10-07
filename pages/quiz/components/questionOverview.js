@@ -122,7 +122,35 @@ const QuestionOverview = ({
   //for the Timer
   useEffect(() => {
     let interval;
-
+      const handleSubmit = async () => {
+        let ansData = {};
+        let total = 0;
+        Object.entries(quizData["answers"]).forEach(([key, value]) => {
+          total += value.marks;
+        });
+        ansData = {
+          quiz_id: quizId,
+          uid: userData.user.uid,
+          answer: JSON.stringify(quizData.answers),
+          marks_obtained: total,
+        };
+        console.log(ansData);
+        if (Object.keys(ansData).length > 0) {
+          try {
+            const quizResponse = await axios.post(
+              "http://localhost:8000/api/submitQuiz",
+              ansData
+            );
+            console.log(quizResponse);
+            if (quizResponse.data.msg === "Submitted Successfully") {
+              dispatch(quizComplete());
+              route.replace("/home");
+            }
+          } catch (error) {
+            console.log("Error Occured", error.message);
+          }
+        }
+      };
     if (timer > 0) {
       interval = setInterval(() => {
         setTimer(timer - 1);
@@ -133,7 +161,7 @@ const QuestionOverview = ({
       clearInterval(interval); // Stop the timer when it reaches 0
       // Trigger your event here
       alert("Exam Countdown completed!");
-      route.replace("/home");
+      handleSubmit();
     }
 
     return () => clearInterval(interval); // Cleanup the interval when the component unmounts

@@ -13,18 +13,18 @@ const CreateQuizOverview = ({ swipeQue }) => {
     let uploadData = { ...data, is_active: 0 };
     console.log(uploadData);
    
-    swipeQue(8);
-    // try {
-    //     const uploadQuizOverview = await axios.post(
-    //       "http://localhost:8000/api/createQuizOverview", uploadData, {
-    //         headers:{"Content-Type": "application/json"}
-    //       }
-    //     );
-    //     console.log("Upload Status",uploadQuizOverview.data.headers);
-    //      swipeQue(uploadQuizOverview.data.headers);
-    // } catch (error) {
-    //     console.error("Error While Uploading",error.message);
-    // }
+    // swipeQue(8,"Test Quiz");
+    try {
+        const uploadQuizOverview = await axios.post(
+          "http://localhost:8000/api/createQuizOverview", uploadData, {
+            headers:{"Content-Type": "application/json"}
+          }
+        );
+         swipeQue(uploadQuizOverview.data.headers.quizID,
+uploadQuizOverview.data.headers.quizName);
+    } catch (error) {
+        console.error("Error While Uploading",error.message);
+    }
   };
   return (
     <>

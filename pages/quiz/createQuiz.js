@@ -8,8 +8,10 @@ import CreateQuizQuestion from './components/createQuizQuestion';
 const CreateQuiz = () => {
   const [swipe, setSwipe] = useState(false)
   const [quizId, setQuizId] = useState(null)
-  const swipeToQues=(quiz_id)=>{    
+  const [quizName, setQuizName] = useState(null);
+  const swipeToQues=(quiz_id, quizName)=>{    
     setQuizId(quiz_id);
+    setQuizName(quizName);
     setSwipe(true)
   }
     const userData=useSelector((state)=>state.user)
@@ -20,7 +22,7 @@ const CreateQuiz = () => {
     <>
       <MenuAppBar />
       {swipe && quizId !== null ? (
-        <CreateQuizQuestion quiz_Id={quizId}/>
+        <CreateQuizQuestion quiz_Id={quizId} quiz_Name={quizName}/>
       ) : (
         <CreateQuizOverview swipeQue={swipeToQues} />
       )}

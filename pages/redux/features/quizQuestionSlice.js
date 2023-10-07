@@ -24,9 +24,12 @@ const quizQuestionSlice=createSlice({
             };
             state.question[id] = ansObj;
             
+        },
+        emptyQuiz:(state, action)=>{
+            state.question={}
         }
     }
 })
 
-export const {createQuiz}=quizQuestionSlice.actions
+export const { createQuiz, emptyQuiz } = quizQuestionSlice.actions;
 export default quizQuestionSlice.reducer
