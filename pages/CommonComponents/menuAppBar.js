@@ -43,11 +43,14 @@ export default function MenuAppBar() {
           >
             <MenuIcon />
           </IconButton> */}
-         
+          
             <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
               <Link href="/home">Quiz </Link>
             </Typography>
-         
+            <Typography variant="h6" component="div" sx={{ flexGrow: 1 }}>
+              <Link href="/quiz/admin/">Admin </Link>
+            </Typography>
+        
 
           {auth && (
             <div>

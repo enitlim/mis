@@ -151,7 +151,7 @@ const CreateQuizQuestion = ({ quiz_Id, quiz_Name }) => {
   return (
     <>
       <Container>
-        <Button onClick={handleOpen}>Close</Button>
+        {/* <Button onClick={handleOpen}>Close</Button> */}
         <Snackbar
           anchorOrigin={{ vertical: "bottom", horizontal: "left" }}
           open={open}

@@ -4,18 +4,45 @@ import Question from "./components/questionMain";
 import QuestionOverview from "./components/questionOverview";
 import axios from "axios";
 import QuestionReview from "./components/questionReview";
+import { AES, enc } from "crypto-js";
+
+import Button from '@mui/material/Button'
+// require("dotenv").config();
+
 const QuizSessoin = () => {
+  
+     const decryptData = (data) => {
+      try {
+       const decodedStr = decodeURIComponent(data);
+       const decryptedData = AES.decrypt(
+         decodedStr,
+         process.env.URLSECRETKEY
+       ).toString(enc.Utf8);
+       console.log("Decrypted Data: ",decryptedData);
+         return decryptedData
+    
+  } catch (error) {
+    console.error("Decryption error:", error);
+    return "Decryption Error";
+  }
+}
   const route = useRouter();
-  const { id, name, total_time, pass_mark, para } = route.query;
+  const { idt, namet, total_timet, pass_markt, parat } = route.query;
 
   const [queIndex, setqueIndex] = useState(1);
   const [Questions, setQuestions] = useState([]);
+  const id = decryptData(idt);
+  const total_time = total_timet?decryptData(total_timet.toString()):"";
+  const para = decryptData(parat);
+console.log(id,
+para);
   const questionFun = (indData) => {
     setqueIndex(indData);
   };
-  useEffect(() => {
-    if (typeof id != "undefined") {     
 
+
+  useEffect(() => {
+    if (typeof id != "undefined") {
       const getQuiz = async () => {
         try {
           const queData = await axios.get(
@@ -35,11 +62,12 @@ const QuizSessoin = () => {
       };
       getQuiz();
     }
-  }, [id]);
+  }, [idt]);
   // console.log(Questions.length);
   // console.log(Questions);
   return (
     <>
+     
       <div style={{ display: "flex", justifyContent: "space-between" }}>
         {Questions.length > 0 ? (
           <>

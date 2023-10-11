@@ -8,10 +8,13 @@ import {
   Button, Grid,
 } from "@mui/material";
 import { useRouter } from 'next/router';
+import MenuAppBar from '../../CommonComponents/menuAppBar';
+import Certificate from '../components/certificate';
 const AdminCard = () => {
   const router = useRouter();
   return (
     <>
+    <MenuAppBar/>
       <Grid container spacing={2}>
         <Grid item xs={4}>
           <Card
@@ -66,6 +69,7 @@ const AdminCard = () => {
           </Card>
         </Grid>
       </Grid>
+      <Certificate/>
     </>
   );
 }

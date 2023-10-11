@@ -1,17 +1,35 @@
-import { Box, Container, TextField, Typography, Button } from "@mui/material";
+import {
+  Box,
+  Container,
+  TextField,
+  Typography,
+  Button,
+  FormControl,
+} from "@mui/material";
 import React from 'react'
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import axios from "axios";
+import { DemoContainer } from "@mui/x-date-pickers/internals/demo";
+import { AdapterDayjs } from "@mui/x-date-pickers/AdapterDayjs";
+import { LocalizationProvider } from "@mui/x-date-pickers/LocalizationProvider";
+import { DateTimePicker } from "@mui/x-date-pickers/DateTimePicker";
+
 const CreateQuizOverview = ({ swipeQue }) => {
   const {
+    control,
     register,
     handleSubmit,
     watch,
     formState: { errors },
   } = useForm();
   const submitData = async (data) => {
+    let SelectedDate = new Date(data.quizstart);
+    let qs = `${SelectedDate.getFullYear()}-${
+      String(SelectedDate.getMonth() + 1).padStart(2, '0')
+    }-${String(SelectedDate.getDate()).padStart(2,'0')} ${String(SelectedDate.getHours()).padStart(2,'0')}:${String(SelectedDate.getMinutes()).padStart(2,'0')}:${String(SelectedDate.getSeconds()).padStart(2,'0')}`;
     let uploadData = { ...data, is_active: 0 };
-    console.log(uploadData);
+    uploadData.quizstart=qs
+    console.log  (JSON.stringify(uploadData));
    
     // swipeQue(8,"Test Quiz");
     try {
@@ -87,6 +105,34 @@ uploadQuizOverview.data.headers.quizName);
             {errors.total_time && (
               <span style={{ color: "red" }}>This field is required</span>
             )}
+
+            <LocalizationProvider dateAdapter={AdapterDayjs}>
+              <FormControl fullWidth>
+                <Controller
+                  fullWidth
+                  name="quiz_start" // This should match the name in your form data
+                  control={control}
+                  rules={{ required: "Datetime is required" }} // Add validation rules as needed
+                  render={({ field }) => (
+                    <DateTimePicker
+                      label="Select Datetime"
+                      {...field}
+                      inputFormat="yyyy/MM/dd hh:mm a"
+                      value={field.value ? field.value : null} // Ensure value is in the correct format
+                      renderInput={(props) => (
+                        <TextField
+                          {...props}
+                          value={field.value ? formatDateTime(field.value) : ""}
+                          // Disable input so users can't edit it directly
+                          disabled
+                        />
+                      )}
+                    />
+                  )}
+                />
+              </FormControl>
+            </LocalizationProvider>
+
             <Button type="submit" variant="contained" color="primary" fullWidth>
               Create
             </Button>

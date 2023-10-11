@@ -2,6 +2,9 @@
 const nextConfig = {
   reactStrictMode: true,
   swcMinify: true,
-}
+  env: {
+    URLSECRETKEY: process.env.URLSECRETKEY,
+  },
+};
 
 module.exports = nextConfig

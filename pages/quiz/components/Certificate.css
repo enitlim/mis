@@ -1,0 +1,27 @@
+.certificate {
+    width: 600px;
+    padding: 20px;
+    border: 2px solid #333;
+    margin: 0 auto;
+    text-align: center;
+    font-family: Arial, sans-serif;
+}
+
+.certificate-header {
+    background-color: #333;
+    color: #fff;
+    padding: 10px;
+}
+
+.certificate-content {
+    margin-top: 20px;
+}
+
+.certificate-content h3,
+.certificate-content h4 {
+    margin: 10px 0;
+}
+
+.certificate-signature {
+    margin-top: 20px;
+}

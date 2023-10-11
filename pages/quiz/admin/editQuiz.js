@@ -4,7 +4,9 @@ const EditQuiz = () => {
   const router = useRouter()
   const {id, name}=router.query
   return (
-    <div>{id}{name}</div>
+    <>{id}{name}
+      
+    </>
   )
 }
 

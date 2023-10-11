@@ -5,19 +5,29 @@ import {
   CardContent,
   CardActions,
   Button,
-  Grid,
+  Grid,Snackbar,
+Alert
 } from "@mui/material";
+import FormGroup from "@mui/material/FormGroup";
+import FormControlLabel from "@mui/material/FormControlLabel";
+import Switch from "@mui/material/Switch";
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/router";
+import MenuAppBar from "../../CommonComponents/menuAppBar";
 const EditQuizAll = () => {
   const [quizData, setQuizData] = useState([]);
+  const [toggle, setToggle] = useState(null)
+    const [open, setOpen] = useState(false);
+  const [severe, setSevere] = useState("success");
+const [alertMsg, setAlertMsg] = useState("");
   const route = useRouter();
+  console.log(quizData);
   useEffect(() => {
     const fetchQuizData = async () => {
       try {
         const fetchedData = await axios.get(
-          `http://localhost:8000/api/get_all_quiz/{user_id}`
+          `http://localhost:8000/api/get_all_quiz/`
         );
         // console.log(fetchedData.data.quiz);
         setQuizData(fetchedData.data.quiz);
@@ -34,7 +44,7 @@ const EditQuizAll = () => {
     };
 
     fetchQuizData();
-  }, []);
+  }, [toggle]);
   const handleQuizStart = (id, name) => {
  
       route.push({
@@ -43,9 +53,42 @@ const EditQuizAll = () => {
       });
    
   };
+  const handleSwitch = async(quizID, event) => {
+      const quizActivate = await axios.patch(
+        `http://localhost:8000/api/activate_quiz/?quiz_id=${quizID}&toggleStatus=${event.target.checked}`
+      );
+      if (quizActivate.data.message=="activated") {
+        setOpen(true);
+        setSevere("success");
+        setAlertMsg("Quiz successfully activated");
+      }   
+      else{
+        setOpen(true);
+        setSevere("warning");
+        setAlertMsg("Quiz successfully deactivated");
+      }
+      !toggle ? setToggle(true) : setToggle(false); 
 
+  }
+    const handleClose = (event, reason) => {
+      if (reason === "clickaway") {
+        return;
+      }
+      setOpen(false);
+    };
   return (
     <>
+      <MenuAppBar />
+      <Snackbar
+        anchorOrigin={{ vertical: "top", horizontal: "center" }}
+        open={open}
+        onClose={handleClose}
+        autoHideDuration={2000}
+      >
+        <Alert onClose={handleClose} severity={severe} sx={{ width: "100%" }}>
+          {alertMsg}
+        </Alert>
+      </Snackbar>
       <Box
         textAlign="center"
         sx={{
@@ -98,6 +141,22 @@ const EditQuizAll = () => {
                     </Box>
                   </CardContent>
                   <CardActions>
+                    <FormGroup>
+                      <FormControlLabel
+                        control={
+                          <Switch
+                            // defaultChecked={quiz.is_active === 1}
+                            checked={quiz.is_active === 1}
+                            onChange={(event) => handleSwitch(quiz.id, event)}
+                          />
+                        }
+                        label={
+                          quiz.is_active === 1
+                            ? "Deactive Quiz"
+                            : "Activate Quiz"
+                        }
+                      />
+                    </FormGroup>
                     <Button
                       variant="contained"
                       color="primary"

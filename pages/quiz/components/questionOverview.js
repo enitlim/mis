@@ -28,9 +28,7 @@ const QuestionOverview = ({
   const quizData = useSelector((state) => state.quiz); //get the quiz data from store
   const userData = useSelector((state) => state.user); //get the user data from store
   const dispatch = useDispatch();
-  // console.log(quizData);
-  //for the legend update based on state of the quiz
-
+//fetching Data
   useEffect(() => {
     if (para === "review") {
       const getQuizAns = async () => {
@@ -44,17 +42,16 @@ const QuestionOverview = ({
       setReview(1);
     }
   }, []);
+  //for the legend update based on state of the quiz
 
   useEffect(() => {
     if (para === "review") {
       const updatedData = [...itemColor];
       Object.entries(ansData).map(([key, value]) => {
-        
-        if (value.marks===0) {
-           updatedData[key - 1] = styleNotAttempt;
-           setItemColor(updatedData);
-        }
-        else{
+        if (value.marks === 0) {
+          updatedData[key - 1] = styleNotAttempt;
+          setItemColor(updatedData);
+        } else {
           updatedData[key - 1] = styleAttempt;
           setItemColor(updatedData);
         }
@@ -119,38 +116,38 @@ const QuestionOverview = ({
       }
     }
   };
-  //for the Timer
+  //When Timer Finishs It autosubmits
   useEffect(() => {
     let interval;
-      const handleSubmit = async () => {
-        let ansData = {};
-        let total = 0;
-        Object.entries(quizData["answers"]).forEach(([key, value]) => {
-          total += value.marks;
-        });
-        ansData = {
-          quiz_id: quizId,
-          uid: userData.user.uid,
-          answer: JSON.stringify(quizData.answers),
-          marks_obtained: total,
-        };
-        console.log(ansData);
-        if (Object.keys(ansData).length > 0) {
-          try {
-            const quizResponse = await axios.post(
-              "http://localhost:8000/api/submitQuiz",
-              ansData
-            );
-            console.log(quizResponse);
-            if (quizResponse.data.msg === "Submitted Successfully") {
-              dispatch(quizComplete());
-              route.replace("/home");
-            }
-          } catch (error) {
-            console.log("Error Occured", error.message);
-          }
-        }
+    const handleSubmit = async () => {
+      let ansData = {};
+      let total = 0;
+      Object.entries(quizData["answers"]).forEach(([key, value]) => {
+        total += value.marks;
+      });
+      ansData = {
+        quiz_id: quizId,
+        uid: userData.user.uid,
+        answer: JSON.stringify(quizData.answers),
+        marks_obtained: total,
       };
+      console.log(ansData);
+      if (Object.keys(ansData).length > 0) {
+        try {
+          const quizResponse = await axios.post(
+            "http://localhost:8000/api/submitQuiz",
+            ansData
+          );
+          console.log(quizResponse);
+          if (quizResponse.data.msg === "Submitted Successfully") {
+            dispatch(quizComplete());
+            route.replace("/home");
+          }
+        } catch (error) {
+          console.log("Error Occured", error.message);
+        }
+      }
+    };
     if (timer > 0) {
       interval = setInterval(() => {
         setTimer(timer - 1);
@@ -170,6 +167,7 @@ const QuestionOverview = ({
   const handleClickItem = (item) => {
     triggerFun(item);
   };
+  //Handle close is for review page
   const handleClose = () => {
     route.replace("/home");
   };
@@ -239,11 +237,8 @@ const QuestionOverview = ({
 
                 <Grid item xs={6} sx={styleLegend}>
                   <Box sx={styleNotAttempt}></Box>
-                  <Typography sx={{ paddingLeft: "5px" }}>
-                    Wrong
-                  </Typography>
+                  <Typography sx={{ paddingLeft: "5px" }}>Wrong</Typography>
                 </Grid>
-
               </Grid>
               <Grid container direction="row" spacing={2}>
                 <Grid item xs={12}>
