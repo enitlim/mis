@@ -7,6 +7,7 @@ import QuestionReview from "./components/questionReview";
 import { AES, enc } from "crypto-js";
 
 import Button from '@mui/material/Button'
+import Result from "./components/quizResult";
 // require("dotenv").config();
 
 const QuizSessoin = () => {
@@ -28,18 +29,23 @@ const QuizSessoin = () => {
 }
   const route = useRouter();
   const { idt, namet, total_timet, pass_markt, parat } = route.query;
-
+  const [isQuizOver, setIsQuizOver] = useState(false)
+  const [resultData, setResultData] = useState({})
   const [queIndex, setqueIndex] = useState(1);
   const [Questions, setQuestions] = useState([]);
   const id = decryptData(idt);
   const total_time = total_timet?decryptData(total_timet.toString()):"";
   const para = decryptData(parat);
+  const pass_mark=decryptData(pass_markt);
 console.log(id,
 para);
   const questionFun = (indData) => {
     setqueIndex(indData);
   };
-
+  const QuizOverToggle=(marks, passed)=>{
+    setResultData({"marks":marks, "passed":passed})
+    setIsQuizOver(true)
+  }
 
   useEffect(() => {
     if (typeof id != "undefined") {
@@ -63,41 +69,50 @@ para);
       getQuiz();
     }
   }, [idt]);
-  // console.log(Questions.length);
-  // console.log(Questions);
+  console.log("Result Data: ",resultData);
+  console.log("Is Quiz Over: ",isQuizOver);
   return (
     <>
-     
-      <div style={{ display: "flex", justifyContent: "space-between" }}>
-        {Questions.length > 0 ? (
-          <>
-            {/* <p>Show</p> */}
-
-            {para === "review" ? (
+      {isQuizOver ? (
+        <>
+          <Result data={resultData} />
+        </>
+      ) : (
+        <>
+          <div style={{ display: "flex", justifyContent: "space-between" }}>
+            {Questions.length > 0 ? (
               <>
-                <QuestionReview
-                  queIndex={queIndex}
+                {/* <p>Show</p> */}
+
+                {para === "review" ? (
+                  <>
+                    <QuestionReview
+                      queIndex={queIndex}
+                      Questions={Questions}
+                      queId={id}
+                    />{" "}
+                  </>
+                ) : (
+                  <>
+                    <Question queIndex={queIndex} Questions={Questions} />
+                  </>
+                )}
+                <QuestionOverview
+                  triggerQuizOver={QuizOverToggle}
+                  triggerFun={questionFun}
                   Questions={Questions}
-                  queId={id}
-                />{" "}
+                  quizId={id}
+                  para={para}
+                  examTime={total_time}
+                  pass_mark={pass_mark}
+                />
               </>
             ) : (
-              <>
-                <Question queIndex={queIndex} Questions={Questions} />
-              </>
+              ""
             )}
-            <QuestionOverview
-              triggerFun={questionFun}
-              Questions={Questions}
-              quizId={id}
-              para={para}
-              examTime={total_time}
-            />
-          </>
-        ) : (
-          ""
-        )}
-      </div>
+          </div>
+        </>
+      )}
     </>
   );
 };
