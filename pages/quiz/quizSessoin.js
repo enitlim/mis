@@ -5,13 +5,13 @@ import QuestionOverview from "./components/questionOverview";
 import axios from "axios";
 import QuestionReview from "./components/questionReview";
 import { AES, enc } from "crypto-js";
-
-import Button from '@mui/material/Button'
+import { useSelector, useDispatch } from "react-redux";
+import { InsertQuiz } from "../redux/features/quizSlice";
 import Result from "./components/quizResult";
 // require("dotenv").config();
 
 const QuizSessoin = () => {
-  
+    const dispatch=useDispatch();
      const decryptData = (data) => {
       try {
        const decodedStr = decodeURIComponent(data);
@@ -19,7 +19,7 @@ const QuizSessoin = () => {
          decodedStr,
          process.env.URLSECRETKEY
        ).toString(enc.Utf8);
-       console.log("Decrypted Data: ",decryptedData);
+      //  console.log("Decrypted Data: ",decryptedData);
          return decryptedData
     
   } catch (error) {
@@ -37,15 +37,18 @@ const QuizSessoin = () => {
   const total_time = total_timet?decryptData(total_timet.toString()):"";
   const para = decryptData(parat);
   const pass_mark=decryptData(pass_markt);
-console.log(id,
-para);
-  const questionFun = (indData) => {
+const questionFun = (indData) => {
     setqueIndex(indData);
   };
   const QuizOverToggle=(marks, passed)=>{
     setResultData({"marks":marks, "passed":passed})
     setIsQuizOver(true)
   }
+useEffect(() => {
+  if (para === "start") {
+    dispatch(InsertQuiz(Questions));
+  }
+}, [Questions]);
 
   useEffect(() => {
     if (typeof id != "undefined") {
@@ -69,8 +72,7 @@ para);
       getQuiz();
     }
   }, [idt]);
-  console.log("Result Data: ",resultData);
-  console.log("Is Quiz Over: ",isQuizOver);
+
   return (
     <>
       {isQuizOver ? (

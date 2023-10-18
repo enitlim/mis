@@ -59,13 +59,13 @@ const QuestionOverview = ({
         }
       });
     } else {
-      if (Object.keys(quizData["answers"]).length === 0) {
-        setItemColor(
-          questionlist.map((d, index) => {
-            return styleNotView;
-          })
-        );
-      } else {
+      // if (Object.keys(quizData["answers"]).length === 0) {
+      //   setItemColor(
+      //     questionlist.map((d, index) => {
+      //       return styleNotView;
+      //     })
+      //   );
+      // } else {
         const updatedData = [...itemColor];
         Object.entries(quizData["answers"]).map(([key, value]) => {
           if (value["option"] == "answered") {
@@ -78,8 +78,12 @@ const QuestionOverview = ({
             updatedData[key - 1] = styleNotAttempt;
             setItemColor(updatedData);
           }
+          else{
+            updatedData[key - 1] = styleNotView;
+            setItemColor(updatedData);
+          }
         });
-      }
+      // }
     }
   }, [quizData, review, ansData]);
   //Time format for the Counter
