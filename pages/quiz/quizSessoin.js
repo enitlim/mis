@@ -33,6 +33,8 @@ const QuizSessoin = () => {
   const [resultData, setResultData] = useState({})
   const [queIndex, setqueIndex] = useState(1);
   const [Questions, setQuestions] = useState([]);
+  const [effectCount, setEffectCount] = useState(0);
+
   const id = decryptData(idt);
   const total_time = total_timet?decryptData(total_timet.toString()):"";
   const para = decryptData(parat);
@@ -45,12 +47,16 @@ const questionFun = (indData) => {
     setIsQuizOver(true)
   }
 useEffect(() => {
-  if (para === "start") {
-    dispatch(InsertQuiz(Questions));
-  }
-}, [Questions]);
+  console.log("Dispatch is running");
+  console.log("Questions: ", Questions);
+
+  // if (para === "start") {
+  //   dispatch(InsertQuiz(Questions));
+  // }
+}, []);
 
   useEffect(() => {
+    console.log("idt", idt);
     if (typeof id != "undefined") {
       const getQuiz = async () => {
         try {
@@ -58,6 +64,7 @@ useEffect(() => {
             `http://localhost:8000/api/quiz/${id}`
           );
           setQuestions(queData["data"]["quiz"]);
+     
         } catch (error) {
           if (error.response && error.response.status === 422) {
             console.log(

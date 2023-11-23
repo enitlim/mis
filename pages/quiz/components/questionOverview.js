@@ -22,6 +22,7 @@ const QuestionOverview = ({
   pass_mark,
 }) => {
   const route = useRouter();
+ 
   const questionlist = Questions;
   const [timer, setTimer] = useState(examTime * 60);
   const [itemColor, setItemColor] = useState([]);
@@ -45,7 +46,7 @@ const QuestionOverview = ({
     }
   }, []);
   //for the legend update based on state of the quiz
-
+console.log("Item Color", itemColor);
   useEffect(() => {
     if (para === "review") {
       const updatedData = [...itemColor];
@@ -59,31 +60,52 @@ const QuestionOverview = ({
         }
       });
     } else {
-      // if (Object.keys(quizData["answers"]).length === 0) {
-      //   setItemColor(
-      //     questionlist.map((d, index) => {
-      //       return styleNotView;
-      //     })
-      //   );
-      // } else {
-        const updatedData = [...itemColor];
-        Object.entries(quizData["answers"]).map(([key, value]) => {
-          if (value["option"] == "answered") {
-            updatedData[key - 1] = styleAttempt;
-            setItemColor(updatedData);
-          } else if (value["option"] == "review") {
-            updatedData[key - 1] = styleReview;
-            setItemColor(updatedData);
-          } else if (value["option"] == "unanswerwed") {
-            updatedData[key - 1] = styleNotAttempt;
-            setItemColor(updatedData);
-          }
-          else{
-            updatedData[key - 1] = styleNotView;
-            setItemColor(updatedData);
-          }
-        });
-      // }
+      if (Object.keys(questionlist).length >0) {
+        console.log("quizData: " + JSON.stringify(quizData["answers"]));
+        setItemColor(
+          questionlist.map((d, index) => {
+            return styleNotView;
+          })
+         
+        );
+const updatedData = [...itemColor];
+         Object.entries(quizData["answers"]).map(([key, value]) => {
+             if (value["option"] == "answered") {
+               updatedData[key - 1] = styleAttempt;
+               setItemColor(updatedData);
+             } else if (value["option"] == "review") {
+               updatedData[key - 1] = styleReview;
+               setItemColor(updatedData);
+             } else if (value["option"] == "unanswerwed") {
+               updatedData[key - 1] = styleNotAttempt;
+               setItemColor(updatedData);
+             }
+             else{
+               updatedData[key - 1] = styleNotView;
+               setItemColor(updatedData);
+             }
+         });
+      } else {
+        
+
+        // const updatedData = [...itemColor];
+        // Object.entries(quizData["answers"]).map(([key, value]) => {
+        //   if (value["option"] == "answered") {
+        //     updatedData[key - 1] = styleAttempt;
+        //     setItemColor(updatedData);
+        //   } else if (value["option"] == "review") {
+        //     updatedData[key - 1] = styleReview;
+        //     setItemColor(updatedData);
+        //   } else if (value["option"] == "unanswerwed") {
+        //     updatedData[key - 1] = styleNotAttempt;
+        //     setItemColor(updatedData);
+        //   }
+        //   else{
+        //     updatedData[key - 1] = styleNotView;
+        //     setItemColor(updatedData);
+        //   }
+        // });
+      }
     }
   }, [quizData, review, ansData]);
   //Time format for the Counter

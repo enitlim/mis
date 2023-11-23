@@ -29,7 +29,7 @@ const Login = () => {
       localStorage.setItem("access_token", response.data.access_token);
       const responseUser = await axios.get("http://localhost:8000/get_user_details", config)
       dispatch(getUser(responseUser.data));
-      console.log(responseUser.data);
+      // console.log(responseUser.data);
       router.push("/home")
     } catch (error) {
       console.log("Error: ", error.response?.data);
